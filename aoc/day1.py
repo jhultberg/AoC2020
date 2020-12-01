@@ -8,9 +8,9 @@ def two(input):
 def three(input):
     for i in input:
         for j in input:
-            fir k in input:
+            for k in input:
                 if i+j+k == 2020
-                return i*j*k
+                   return i*j*k
     return 0
 
 
