@@ -2,8 +2,8 @@ import os
 import math
 
 current_dir = os.getcwd()
-#filename = "data/day13.txt"
-filename = "test.txt"
+filename = "data/day13.txt"
+#filename = "test.txt"
 
 path = os.path.join(current_dir, filename)
 
@@ -28,26 +28,28 @@ def earliest_bus_after_timestamp(buses, earliest_timestamp):
 def waitingtime(bus, earliest_timestamp):
     return (bus*math.ceil(earliest_timestamp/bus) - earliest_timestamp)*bus
 
+def buses_and_offsets(all_buses):
+    idx = -1
+    bus_offset = []
+    for bus in all_buses:
+        idx +=1
+        if bus == "x":
+            continue
+        bus_offset.append((int(bus), idx))
+    return bus_offset
+
+def earliest_for_all_buses(buses):
+    time = 0
+    W = int(buses[0][0])
+    for bus in buses[1:]:
+        idx = int(bus[1])
+        while (time + idx) % int(bus[0]) != 0:
+            time += W
+        W *= int(bus[0])
+    return time
+
 ### A
 print(waitingtime(earliest_bus_after_timestamp(all_buses, earliest_time), earliest_time))
 
 ### B
-idx = -1
-bus_offset = []
-for bus in all_buses:
-    idx +=1
-    if bus == "x":
-        continue
-    bus_offset.append((int(bus), idx))
-print(bus_offset)
-
-target = 0
-multiple = bus_offset[0][0]
-for bus in bus_offset[1:]:
-    idx = 1
-    while not (idx * multiple) % bus[0] == bus[0] - bus[1]:
-        idx += 1
-    target = multiple * idx
-    print(target, idx)
-print(target)
-
+print(earliest_for_all_buses(buses_and_offsets(all_buses)))
